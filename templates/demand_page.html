@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+    
+<h2>Востребованность</h2>
+<div class="container"> 
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Динамика уровня зарплат по годам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Год</th>
+                    <th>Средняя з/п (руб.)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for year in all_years %}
+                <tr>
+                    <td>{{ year.year }}</td>
+                    <td>{{ year.salary }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/third_graph.png' %}" height="400" width="600" alt="graph">
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Динамика количества вакансий по годам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Год</th>
+                    <th>Количество вакансий</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for year in all_years %}
+                <tr>
+                    <td>{{ year.year }}</td>
+                    <td>{{ year.count }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/fourth_graph.png' %}" height="400" width="600" alt="graph">
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Динамика уровня зарплат Backend-разработчиков по годам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Год</th>
+                    <th>Средняя з/п (руб.)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for year in years %}
+                <tr>
+                    <td>{{ year.year }}</td>
+                    <td>{{ year.salary }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/first_graph.png' %}" height="400" width="600" alt="graph">
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Динамика количества вакансий "Backend-разработчик" по годам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Год</th>
+                    <th>Количество вакансий</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for year in years %}
+                <tr>
+                    <td>{{ year.year }}</td>
+                    <td>{{ year.count }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/second_graph.png' %}" height="400" width="600" alt="graph">
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+    
+<h2>География</h2>
+<div class="container"> 
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Уровень зарплат по городам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Город</th>
+                    <th>Средняя з/п (руб.)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for city in all_cities|dictsort:"salary" reversed%}
+                <tr>
+                    <td>{{ city.city }}</td>
+                    <td>{{ city.salary }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/first_geo_graph.png' %}" height="400" width="600" alt="graph">
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Доля вакансий по городам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Город</th>
+                    <th>Доля вакасний, %</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for city in all_cities|dictsort:"percent" reversed%}
+                <tr>
+                    <td>{{ city.city }}</td>
+                    <td>{{ city.percent }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/second_geo_graph.png' %}" height="450" width="600" alt="graph">
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Динамика уровня зарплат Backend-разработчиков по городам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Город</th>
+                    <th>Средняя з/п (руб.)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for city in cities_with_name|dictsort:"salary" reversed %}
+                <tr>
+                    <td>{{ city.city }}</td>
+                    <td>{{ city.salary }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/third_geo_graph.png' %}" height="400" width="600" alt="graph">
+    <div class = 'my_table'>
+        <h3 style="text-align: center">Доля вакансий "Backend-разработчик" по годам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Год</th>
+                    <th>Количество вакансий</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for city in cities_with_name|dictsort:"percent" reversed %}
+                <tr>
+                    <td>{{ city.city }}</td>
+                    <td>{{ city.percent }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/fourth_geo_graph.png' %}" height="450" width="600" alt="graph">
+</div>
+{% endblock %}
