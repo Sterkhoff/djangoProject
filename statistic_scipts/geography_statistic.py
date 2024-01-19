@@ -4,7 +4,8 @@ from datetime import datetime
 import pandas as pd
 import requests
 from djangoProject import models
-vacancies = []
+
+
 names_list = ['backend', 'бэкэнд', 'бэкенд', 'бекенд', 'бекэнд', 'back end',
               'бэк энд', 'бэк енд', 'django', 'flask', 'laravel', 'yii', 'symfony']
 

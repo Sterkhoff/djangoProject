@@ -1,1 +1,48 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block main %}
+    
+<h2>Навыки</h2>
+<div class="container"> 
+    <div class = 'my_table'>
+        <h3 style="text-align: center">ТОП-20 навыков по годам</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Город</th>
+                    <th>Навыки</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for year in top_skills_in_years %}
+                <tr>
+                    <td>{{ year.year }}</td>
+                    <td>{{ year.skills }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/all_skills_graph.png' %}" height="600" width="600" alt="graph">
+    <div class = 'my_table'>
+        <h3 style="text-align: center">ТОП-20 навыков по годам для Backend-разработчика</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Город</th>
+                    <th>Навыки</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for year in top_skills_in_years_with_name %}
+                <tr>
+                    <td>{{ year.year }}</td>
+                    <td>{{ year.skills }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    <img src="{% static '/images/all_skills_graph_with_name.png' %}" height="550" width="600" alt="graph">
+</div>
+{% endblock %}

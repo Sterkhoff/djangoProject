@@ -9,7 +9,8 @@ def create_histogram_graph(x_values, y_values, label, title, file_name, ylabel):
     ax.set_title(title)
     ax.set_xticks(x_values)
     ax.set_xticklabels(x_values, rotation=90)
-    plt.savefig(f'C:\\Users\\maksi\\Документы\\GitHub\\djangoProject\\static\\images\\{file_name}')
+    plt.tight_layout()
+    plt.savefig(f'C:\\Users\\maksi\\Документы\\GitHub\\djangoProject\\static\\images\\{file_name}',bbox_inches='tight')
 
 
 def create_circle_graph(cities, percents, file_name, title):

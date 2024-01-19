@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from djangoProject import models
-
+from statistic_scipts import last_vacancies
+from statistic_scipts import create_graphics
 
 def main_page(request):
     return render(request, "main_page.html")
@@ -20,8 +21,12 @@ def geography_page(request):
 
 
 def skills_page(request):
-    return render(request, "skills.html")
+    skills_with_name = models.TopSkillsWithName.objects.all()
+    all_skills = models.AllTopSkills.objects.all()
+    return render(request, "skills.html", {"top_skills_in_years": all_skills,
+                                           "top_skills_in_years_with_name": skills_with_name})
 
 
 def last_vacancies_page(request):
-    return render(request, "last_vacancies.html")
+    last_vac_list = last_vacancies.vacancies_to_dict()
+    return render(request, "last_vacancies.html", {"vacancies": last_vac_list})
