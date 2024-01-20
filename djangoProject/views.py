@@ -28,5 +28,5 @@ def skills_page(request):
 
 
 def last_vacancies_page(request):
-    last_vac_list = last_vacancies.vacancies_to_dict()
+    last_vac_list = last_vacancies.dict_to_vacancies_objects()
     return render(request, "last_vacancies.html", {"vacancies": last_vac_list})

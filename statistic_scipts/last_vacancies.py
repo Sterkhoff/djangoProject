@@ -1,19 +1,21 @@
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from djangoProject.classes import Vacancy
 import re
+import pytz
 
 
 def get_vacancies_from_api():
     vacancies = []
     names_list = ['backend', 'бэкэнд', 'бэкенд', 'бекенд', 'бекэнд', 'back end',
                   'бэк энд', 'бэк енд', 'django', 'flask', 'laravel', 'yii', 'symfony']
-
-    date_from = (datetime.now() - timedelta(days=1)).date()
+    moscow_time_zone = pytz.timezone("Europe/Moscow")
+    date_from = (datetime.now(moscow_time_zone) - timedelta(days=1)).date()
     for name in names_list:
         for i in range(1, 20):
             try:
-                x = f"https://api.hh.ru/vacancies?text={name}&search_field=name&date_from={date_from}&date_to={datetime.now().date()}&only_with_salary=true&per_page=10&page=0"
+                x = (f"https://api.hh.ru/vacancies?text={name}&search_field=name&date_from={date_from}"
+                     f"&date_to={datetime.now().date()}&only_with_salary=true&per_page=10&page=0")
                 req = requests.get(x).json()
                 vacancies += req['items']
                 if len(vacancies) >= 10:
@@ -27,7 +29,7 @@ def get_vacancies_from_api():
     return vacancies
 
 
-def vacancies_to_dict():
+def dict_to_vacancies_objects():
     vacancies_dicts = get_vacancies_from_api()
     vacancies = []
     for vacancy in vacancies_dicts:
