@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from djangoProject import models
 from statistic_scipts import last_vacancies
-from statistic_scipts import create_graphics
 
 def main_page(request):
     return render(request, "main_page.html")
@@ -27,6 +26,6 @@ def skills_page(request):
                                            "top_skills_in_years_with_name": skills_with_name})
 
 
-def last_vacancies_page(request):
-    last_vac_list = last_vacancies.dict_to_vacancies_objects()
+async def last_vacancies_page(request):
+    last_vac_list = await last_vacancies.dict_to_vacancies_objects()
     return render(request, "last_vacancies.html", {"vacancies": last_vac_list})

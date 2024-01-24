@@ -5,7 +5,7 @@ def create_all_graphics():
     create_histogram_graph([x.year for x in models.AllYearsStatistic.objects.all()],
                                            [x.salary for x in models.AllYearsStatistic.objects.all()],
                                            "Динамика уровня зарплат по годам", "Динамика уровня зарплат по годам",
-                                           "third_graph.png", "Средняя p/п, руб.")
+                                           "third_graph.png", "Средняя з/п, руб.")
 
     create_histogram_graph([x.year for x in models.AllYearsStatistic.objects.all()],
                                            [x.count for x in models.AllYearsStatistic.objects.all()],
@@ -17,13 +17,13 @@ def create_all_graphics():
                                            [x.salary for x in models.YearStatWithName.objects.all()],
                                            "Динамика уровня зарплат по годам для профессии 'Backend-разработчик'",
                                            "Динамика уровня зарплат по годам для профессии 'Backend-разработчик'",
-                                           "first_graph.png", "Средняя p/п, руб.")
+                                           "first_graph.png", "Средняя з/п, руб.")
 
     create_histogram_graph([x.year for x in models.YearStatWithName.objects.all()],
                                            [x.count for x in models.YearStatWithName.objects.all()],
                                            "Динамика количества вакансий по годам для профессии 'Backend-разработчик'",
                                            "Динамика количества вакансий по годам для профессии 'Backend-разработчик'",
-                                           "second_graph.png", "Средняя p/п, руб.")
+                                           "second_graph.png", "Средняя з/п, руб.")
 
     create_histogram_graph(
         [x.city for x in sorted(models.AllCitiesStat.objects.all(), key=lambda x: x.salary, reverse=True)],
@@ -36,7 +36,7 @@ def create_all_graphics():
         [x.salary for x in sorted(models.CitiesStatWithName.objects.all(), key=lambda x: x.salary, reverse=True)],
         "Уровень зарплат по городам для профессии 'Backend-разработчик'",
         "Уровень зарплат по городам для профессии 'Backend-разработчик'",
-        "third_geo_graph.png", "Средняя p/п, руб.")
+        "third_geo_graph.png", "Средняя з/п, руб.")
 
     create_circle_graph([x.city for x in models.AllCitiesStat.objects.all()],
                                         [x.percent for x in models.AllCitiesStat.objects.all()],

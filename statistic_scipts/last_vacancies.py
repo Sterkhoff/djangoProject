@@ -1,3 +1,5 @@
+import asyncio
+
 import requests
 from datetime import datetime, timedelta, timezone
 from djangoProject.classes import Vacancy
@@ -5,7 +7,7 @@ import re
 import pytz
 
 
-def get_vacancies_from_api():
+async def get_vacancies_from_api():
     vacancies = []
     names_list = ['backend', 'бэкэнд', 'бэкенд', 'бекенд', 'бекэнд', 'back end',
                   'бэк энд', 'бэк енд', 'django', 'flask', 'laravel', 'yii', 'symfony']
@@ -29,24 +31,27 @@ def get_vacancies_from_api():
     return vacancies
 
 
-def dict_to_vacancies_objects():
-    vacancies_dicts = get_vacancies_from_api()
-    vacancies = []
-    for vacancy in vacancies_dicts:
-        req = requests.get(f'https://api.hh.ru/vacancies/{vacancy["id"]}').json()
-        if vacancy['salary']["from"] is not None and vacancy['salary']["to"] is not None:
-            salary = f"{vacancy['salary']['from']} - {vacancy['salary']['to']} ({vacancy['salary']['currency']})"
-        elif vacancy['salary']["to"] is not None:
-            salary = f"{vacancy['salary']['to']} ({vacancy['salary']['currency']})"
-        elif vacancy['salary']["from"] is not None:
-            salary = f"{vacancy['salary']['from']} ({vacancy['salary']['currency']})"
-        else:
-            salary = "Не указана"
+async def dict_to_vacancy(vacancy):
 
-        vacancies.append(Vacancy(vacancy['name'], re.sub(r"<[^>]+>", "", req['description'], flags=re.S),
-                                 ", ".join([x['name'] for x in req['key_skills']]),
-                                 vacancy['employer']['name'], salary, vacancy["area"]["name"],
-                                 vacancy["published_at"][:10]))
+    req = requests.get(f'https://api.hh.ru/vacancies/{vacancy["id"]}').json()
+    if vacancy['salary']["from"] is not None and vacancy['salary']["to"] is not None:
+        salary = f"{vacancy['salary']['from']} - {vacancy['salary']['to']} ({vacancy['salary']['currency']})"
+    elif vacancy['salary']["to"] is not None:
+        salary = f"{vacancy['salary']['to']} ({vacancy['salary']['currency']})"
+    elif vacancy['salary']["from"] is not None:
+        salary = f"{vacancy['salary']['from']} ({vacancy['salary']['currency']})"
+    else:
+        salary = "Не указана"
+
+    return Vacancy(vacancy['name'], re.sub(r"<[^>]+>", "", req['description'], flags=re.S),
+                             ", ".join([x['name'] for x in req['key_skills']]),
+                             vacancy['employer']['name'], salary, vacancy["area"]["name"],
+                             vacancy["published_at"][:10])
+
+async def dict_to_vacancies_objects():
+    vacancies_dicts = await get_vacancies_from_api()
+    tasks = [dict_to_vacancy(vac) for vac in vacancies_dicts]
+    vacancies = await asyncio.gather(*tasks)
     return vacancies
 
 
