@@ -1,13 +1,13 @@
-import asyncio
+import threading
 
 import requests
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from djangoProject.classes import Vacancy
 import re
 import pytz
 
 
-async def get_vacancies_from_api():
+def get_vacancies_from_api():
     vacancies = []
     names_list = ['backend', 'бэкэнд', 'бэкенд', 'бекенд', 'бекэнд', 'back end',
                   'бэк энд', 'бэк енд', 'django', 'flask', 'laravel', 'yii', 'symfony']
@@ -31,7 +31,7 @@ async def get_vacancies_from_api():
     return vacancies
 
 
-async def dict_to_vacancy(vacancy):
+def dict_to_vacancy(vacancy, vacancies):
 
     req = requests.get(f'https://api.hh.ru/vacancies/{vacancy["id"]}').json()
     if vacancy['salary']["from"] is not None and vacancy['salary']["to"] is not None:
@@ -43,15 +43,22 @@ async def dict_to_vacancy(vacancy):
     else:
         salary = "Не указана"
 
-    return Vacancy(vacancy['name'], re.sub(r"<[^>]+>", "", req['description'], flags=re.S),
+    vacancies.append(Vacancy(vacancy['name'], re.sub(r"<[^>]+>", "", req['description'], flags=re.S),
                              ", ".join([x['name'] for x in req['key_skills']]),
                              vacancy['employer']['name'], salary, vacancy["area"]["name"],
-                             vacancy["published_at"][:10])
+                             vacancy["published_at"][:10]))
 
-async def dict_to_vacancies_objects():
-    vacancies_dicts = await get_vacancies_from_api()
-    tasks = [dict_to_vacancy(vac) for vac in vacancies_dicts]
-    vacancies = await asyncio.gather(*tasks)
+
+def dict_to_vacancies_objects():
+    vacancies_dicts = get_vacancies_from_api()
+    thread_pool = []
+    vacancies = []
+    for vac in vacancies_dicts:
+        thread_pool.append(threading.Thread(target=dict_to_vacancy, args=(vac, vacancies)))
+    for thread in thread_pool:
+        thread.start()
+    for thread in thread_pool:
+        thread.join()
     return vacancies
 
 

@@ -26,6 +26,6 @@ def skills_page(request):
                                            "top_skills_in_years_with_name": skills_with_name})
 
 
-async def last_vacancies_page(request):
-    last_vac_list = await last_vacancies.dict_to_vacancies_objects()
+def last_vacancies_page(request):
+    last_vac_list = last_vacancies.dict_to_vacancies_objects()
     return render(request, "last_vacancies.html", {"vacancies": last_vac_list})
